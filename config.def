@@ -1,0 +1,48 @@
+package main
+
+import (
+	"github.com/73NN0/corax/pkg/config"
+	"github.com/73NN0/corax/pkg/docker"
+)
+
+const projectMarker = ".git"
+
+const (
+	Coff    = "\033[0m"
+	Red     = "\033[0;31m"
+	Green   = "\033[0;32m"
+	Yellow  = "\033[0;33m"
+	Blue    = "\033[0;34m"
+	BRed    = "\033[1;31m"
+	BGreen  = "\033[1;32m"
+	BYellow = "\033[1;33m"
+)
+
+var Cfg = config.Config{
+	Docker: config.Docker{
+		DockerfileFolder: "docker",
+		DockerfilePrefix: "Dockerfile.",
+		NetworkName:      "dev-network",
+		ContainerTarget:  "/opt/apps",
+		ContainerUser:    "ward",
+	},
+	Bootstrap: config.Bootstrap{
+		Steps: []config.Step{
+			{Name: "packages", Run: pacman.Bootstrap},
+	},
+}
+
+type command func(cfg config.Config, args []string) error
+
+var commands = map[string]map[string]command{
+	"docker": {
+		"main":    docker.Main,
+		"build":   docker.Build,
+		"create":  docker.Create,
+		"start":   docker.Start,
+		"stop":    docker.Stop,
+		"restart": docker.Restart,
+		"enter":   docker.Enter,
+		"execute": docker.Execute,
+	},
+}

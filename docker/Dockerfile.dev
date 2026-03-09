@@ -1,0 +1,10 @@
+FROM archlinux:latest AS build_step
+COPY /usr/local/bin/corax /tmp/corax
+RUN corax docker bootstrap
+RUN corax docker user
+RUN rm /tmp/corax 
+
+FROM archlinux:latest
+COPY --from=build_step / /
+USER ward:ward 
+# change the user name by the one set in config.go
