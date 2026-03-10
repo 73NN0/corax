@@ -1,11 +1,10 @@
-FROM debian:sid-slim AS build_step
+FROM --platform=$BUILDPLATFORM archlinux:latest AS build_step
 COPY bin/corax /tmp/corax 
-RUN file /tmp/corax
 RUN /tmp/corax docker bootstrap
 RUN /tmp/corax docker user
 RUN rm /tmp/corax
 
-FROM debian:sid-slim
+FROM archlinux:latest
 COPY --from=build_step / /
 USER ward:ward 
 # change the user name by the one set in config.go

@@ -119,7 +119,7 @@ func Create(cfg config.Config, args []string) error {
 		return fmt.Errorf("failed to create container: %w", err)
 	}
 
-	return patchIDs(name, uid, gid, cfg.Docker.ContainerUser)
+	return patchIDs(name, uid, gid, cfg.User.Name)
 }
 
 // Start starts an existing container.
@@ -174,6 +174,10 @@ func Execute(cfg config.Config, args []string) error {
 	return run("docker", cmdArgs...)
 }
 
+func User(cfg config.Config, _ []string) error {
+	return setupUser(cfg)
+}
+
 func Main(cfg config.Config, args []string) error {
 	if len(args) == 0 {
 		usage()
@@ -185,6 +189,10 @@ func Main(cfg config.Config, args []string) error {
 		return Build(cfg, args[1:])
 	case "create":
 		return Create(cfg, args[1:])
+	case "user":
+		return User(cfg, args[1:])
+	case "execute":
+		return Execute(cfg, args[1:])
 	default:
 		return fmt.Errorf("unknown: %s", args[0])
 	}

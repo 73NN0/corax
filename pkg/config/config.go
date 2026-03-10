@@ -5,7 +5,12 @@ type Docker struct {
 	DockerfilePrefix string
 	NetworkName      string
 	ContainerTarget  string
-	ContainerUser    string
+}
+
+type User struct {
+	Name string
+	UID  int
+	GID  int
 }
 
 type Step struct {
@@ -20,5 +25,6 @@ type Bootstrap struct {
 type Config struct {
 	Docker    Docker
 	Bootstrap Bootstrap
+	User      User
 	Root      string
 }

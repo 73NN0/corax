@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/73NN0/corax/pkg/config"
 	"github.com/73NN0/corax/pkg/docker"
+	"github.com/73NN0/corax/pkg/pacman"
 )
 
 const projectMarker = ".git"
@@ -19,16 +20,21 @@ const (
 )
 
 var Cfg = config.Config{
+	User: config.User{
+		Name: "ward",
+		UID: 1000,
+		GID: 1000,
+	},
 	Docker: config.Docker{
 		DockerfileFolder: "docker",
 		DockerfilePrefix: "Dockerfile.",
 		NetworkName:      "dev-network",
 		ContainerTarget:  "/opt/apps",
-		ContainerUser:    "ward",
 	},
 	Bootstrap: config.Bootstrap{
 		Steps: []config.Step{
 			{Name: "packages", Run: pacman.Bootstrap},
+		},
 	},
 }
 

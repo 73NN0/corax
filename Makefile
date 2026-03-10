@@ -10,7 +10,7 @@ corax: config.go ${SRCS}
 	go build -o bin/corax .
 
 clean: 
-	rm -rf bin/ && rm config.go
+	@rm -rf bin/ && rm config.go 2>/dev/null
 # 	TODO : make dist command
 #  TODO : make install command and uninstall
 
